@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# FULLSTACK BIGIO - DEVRANGGA
 
-## Getting Started
+## <a name="introduction"></a> Introduction :
 
-First, run the development server:
+Take Home Challenge
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Table of Contents
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- [FULLSTACK BIGIO - DEVRANGGA](#fullstack-bigio---devrangga)
+  - [ Introduction :](#-introduction-)
+  - [Table of Contents](#table-of-contents)
+  - [ Features :](#-features-)
+  - [ Libraries :](#-libraries-)
+  - [ Project Structure :](#-project-structure-)
+  - [ Youtube URL :](#-youtube-url-)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## <a name="features"></a> Features :
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+You may list what feature you created, example :
 
-## Learn More
+- Story List
+- Add Story
+- Story Detail
+- Edit Story
 
-To learn more about Next.js, take a look at the following resources:
+## <a name="libraries"></a> Libraries :
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+You may list what libraries you used in this project, example :
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- NextJS
+- ReactJS
+- Tailwindcss
+- ShadCN
+- Zod
+- React Hook Form
+- Prisma ORM
+- Postgresql
+- Quill
 
-## Deploy on Vercel
+## <a name="project-structures"></a> Project Structure :
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `assets`
+- `components`
+- `utils`
+- `pages`
+- `services`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## <a name="apk-link"></a> Youtube URL :
+
+Attach the link of your deployed project or youtube link

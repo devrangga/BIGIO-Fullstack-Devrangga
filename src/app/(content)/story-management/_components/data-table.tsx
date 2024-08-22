@@ -85,7 +85,7 @@ export function DataTable({ columns, data }: DataTableProps) {
                 className="grid grid-cols-[1fr,3fr,1.25fr,1.25fr,2.5fr,2fr]"
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell key={cell.id} className="hover:cursor-pointer">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}

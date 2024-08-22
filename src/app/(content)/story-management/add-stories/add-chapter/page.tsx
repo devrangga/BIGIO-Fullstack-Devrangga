@@ -11,12 +11,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { story, Story } from "@/app/lib/constant";
 import { capitalizeFirstLetter } from "@/lib/helpers";
-import { Input } from "@/components/ui/input";
-
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
 
@@ -30,11 +29,13 @@ export default function Page() {
 
   useEffect(() => {
     const res = story.find(
-      (item: Story) => item.title === searchParams.get("title")
+      (item: Story) => item?.chapter[0]?.title === searchParams.get("title")
     );
     setData(res || null);
   }, [searchParams]);
+
   const isDetailMode = action === "detail";
+  const isEditMode = action === "edit";
 
   const [content, setContent] = useState<string>("");
   const quillModules = {
@@ -65,7 +66,6 @@ export default function Page() {
     "code-block",
   ];
   const handleEditorChange = (newContent: string) => {
-    console.log(newContent);
     setContent(newContent);
   };
 
@@ -117,7 +117,7 @@ export default function Page() {
           </Button>
         </div>
 
-        <main className="px-8 py-6 shadow-lg rounded-3xl h-full flex  flex-col gap-4">
+        <main className="px-8 py-6 shadow-lg rounded-3xl h-full flex flex-col gap-4">
           <div className="flex flex-col gap-2 w-full">
             <h1 className="font-bold text-gray-900">Title</h1>
             <Input
@@ -125,7 +125,7 @@ export default function Page() {
               type="text"
               placeholder="Title"
               className="w-full"
-              value={data?.title || ""}
+              value={data?.chapter[0].title || ""}
               onChange={(e) =>
                 setData({ ...data, title: e.target.value as string })
               }
@@ -147,6 +147,7 @@ export default function Page() {
                 wordBreak: "break-word",
                 borderBlockColor: "white",
               }}
+              readOnly={isDetailMode}
             />
           </div>
         </main>

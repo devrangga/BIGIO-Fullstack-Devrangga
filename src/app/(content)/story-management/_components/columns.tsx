@@ -16,6 +16,9 @@ export const columns: ColumnDef<Story>[] = [
   {
     accessorKey: "no",
     header: "No",
+    cell: ({ row }) => {
+      return row.index + 1;
+    },
   },
   {
     accessorKey: "title",
