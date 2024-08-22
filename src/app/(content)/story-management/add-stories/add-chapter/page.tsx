@@ -125,7 +125,7 @@ export default function Page() {
               type="text"
               placeholder="Title"
               className="w-full"
-              value={data?.chapter[0].title || ""}
+              value={data?.title || ""}
               onChange={(e) =>
                 setData({ ...data, title: e.target.value as string })
               }
