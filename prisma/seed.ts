@@ -1,38 +1,35 @@
+// prisma/seed.ts
+
 import { PrismaClient, Category, Status } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  const categoryValues = Object.values(Category);
-  const statusValues = Object.values(Status);
-
-  const stories = Array.from({ length: 10 }, (_, index) => ({
-    title: `Story Title ${index + 1}`,
-    writers: `Writer ${index + 1}`,
-    category: categoryValues[Math.floor(Math.random() * categoryValues.length)],
-    keyword: [`Keyword${index + 1}`],
-    status: statusValues[Math.floor(Math.random() * statusValues.length)],
-    chapter: [
-      {
-        title: `Chapter Title ${index + 1}`,
-        lastUpdated: new Date().toISOString(),
-        story: `Story content for chapter ${index + 1}.`,
-      },
-    ],
-  }));
-
-  for (const story of stories) {
-    await prisma.story.create({
-      data: {
-        ...story,
-        chapter: {
-          create: story.chapter,
+  const stories = await Promise.all(
+    Array.from({ length: 15 }).map((_, index) =>
+      prisma.story.create({
+        data: {
+          title: `Story Title ${index + 1}`,
+          writers: `Writer ${index + 1}`,
+          category:
+            index % 3 === 0
+              ? Category.Financial
+              : index % 3 === 1
+              ? Category.Technology
+              : Category.Health,
+          keyword: [`keyword${index + 1}`, `keyword${index + 2}`],
+          status: index % 2 === 0 ? Status.Draft : Status.Publish,
+          chapter: {
+            create: Array.from({ length: 3 }).map((_, chapterIndex) => ({
+              title: `Chapter ${chapterIndex + 1} of Story ${index + 1}`,
+              content: "BlaBlaBlaBlaBlaBla",
+              lastUpdated: new Date(),
+            })),
+          },
         },
-      },
-    });
-  }
-
-  console.log("Seeding completed");
+      })
+    )
+  );
 }
 
 main()

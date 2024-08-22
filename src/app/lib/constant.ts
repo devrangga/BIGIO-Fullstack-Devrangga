@@ -19,13 +19,6 @@ export const sideBar: SideBar[] = [
   },
 ];
 
-export type Chapter = {
-  id: string;
-  title: string;
-  lastUpdated: string;
-  story: string;
-};
-
 export type Story = {
   id: string;
   title: string;
@@ -34,6 +27,13 @@ export type Story = {
   keyword: string[];
   status: "Draft" | "Publish";
   chapter?: Chapter[];
+};
+
+export type Chapter = {
+  id: string;
+  title: string;
+  lastUpdated: string;
+  story: string;
 };
 
 export const story: Story[] = [

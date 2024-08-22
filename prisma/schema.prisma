@@ -36,8 +36,9 @@ model Story {
 
 model Chapter {
   id          String   @id @default(uuid())
-  title       String
-  lastUpdated DateTime
   storyId     String
+  title       String
+  content     String
+  lastUpdated DateTime
   story       Story    @relation("StoryChapters", fields: [storyId], references: [id])
 }
