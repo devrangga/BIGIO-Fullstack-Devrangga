@@ -82,7 +82,14 @@ export default function Page() {
           <span>
             <i className="ri-arrow-right-s-line"></i>
           </span>{" "}
-          <span className="text-cyan font-bold">
+          <span
+            className="text-gray-300 hover:cursor-pointer hover:text-gray-400"
+            onClick={() =>
+              router.replace(
+                `/story-management/add-stories?action=${action}&title=${data?.title}`
+              )
+            }
+          >
             {capitalizeFirstLetter(action)} Stories
           </span>
           <span>
@@ -98,7 +105,11 @@ export default function Page() {
             {capitalizeFirstLetter(action)} Chapter
           </h1>
           <Button
-            onClick={() => router.back()}
+            onClick={() =>
+              router.replace(
+                `/story-management/add-stories?action=${action}&title=${data?.title}`
+              )
+            }
             className="w-fit flex flex-row gap-4 rounded-full bg-gray-100 text-gray-900 font-bold px-6 hover:bg-gray-300 hover:text-gray-900"
           >
             <i className="ri-arrow-left-line"></i>
@@ -106,7 +117,7 @@ export default function Page() {
           </Button>
         </div>
 
-        <main className="px-8 py-6 shadow-lg rounded-3xl flex flex-col gap-4">
+        <main className="px-8 py-6 shadow-lg rounded-3xl h-full flex  flex-col gap-4">
           <div className="flex flex-col gap-2 w-full">
             <h1 className="font-bold text-gray-900">Title</h1>
             <Input
@@ -122,7 +133,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-2 w-full">
+          <div className="flex flex-col gap-2 h-full ">
             <h1 className="font-bold text-gray-900">Story</h1>
 
             <QuillEditor
@@ -130,7 +141,12 @@ export default function Page() {
               onChange={handleEditorChange}
               modules={quillModules}
               formats={quillFormats}
-              className="w-full h-[70%] mt-10 bg-white"
+              className="overflow-hidden"
+              style={{
+                blockSize: "500px",
+                wordBreak: "break-word",
+                borderBlockColor: "white",
+              }}
             />
           </div>
         </main>

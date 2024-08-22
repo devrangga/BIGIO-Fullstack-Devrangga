@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -17,11 +18,53 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import React from "react";
+import React, { useState } from "react";
 import Table from "./_components/Table";
 import Link from "next/link";
+import { story as initialStories, Story } from "@/app/lib/constant";
 
 const StoryManagement = () => {
+  const [data, setData] = useState<Story[]>(initialStories);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchValue = e.target.value.toLowerCase();
+    setSearchTerm(searchValue);
+
+    const filteredData = initialStories.filter(
+      (story) =>
+        story.title.toLowerCase().includes(searchValue) ||
+        story.writers.toLowerCase().includes(searchValue)
+    );
+
+    setData(filteredData);
+  };
+
+  const applyFilter = () => {
+    const filteredData = initialStories
+      .filter(
+        (story) =>
+          story.title.toLowerCase().includes(searchTerm) ||
+          story.writers.toLowerCase().includes(searchTerm)
+      )
+      .filter(
+        (story) =>
+          (categoryFilter ? story.category === categoryFilter : true) &&
+          (statusFilter ? story.status === statusFilter : true)
+      );
+
+    setData(filteredData);
+  };
+
+  const resetFilter = () => {
+    setCategoryFilter("");
+    setStatusFilter("");
+    setSearchTerm("");
+    setData(initialStories);
+  };
+
   return (
     <section className="flex flex-col gap-4">
       <Dialog>
@@ -30,13 +73,15 @@ const StoryManagement = () => {
         <div className="px-8 py-6 shadow-lg rounded-3xl">
           <div className="flex flex-row justify-between">
             <Input
-              type="email"
+              type="text"
               placeholder="Search by Writers/Title"
               className="w-[50%] py-6"
+              value={searchTerm}
+              onChange={handleSearch}
             />
             <div className="flex flex-row items-center gap-4">
               <DialogTrigger asChild>
-                <button className="flex items-center justify-center  rounded-full border-[1px] border-gray-300 shadow-md h-[48px] w-[48px]">
+                <button className="flex items-center justify-center rounded-full border-[1px] border-gray-300 shadow-md h-[48px] w-[48px]">
                   <i className="ri-filter-2-line text-2xl"></i>
                 </button>
               </DialogTrigger>
@@ -50,7 +95,7 @@ const StoryManagement = () => {
             </div>
           </div>
 
-          <Table />
+          <Table story={data} />
         </div>
 
         <DialogContent className="w-[425px] gap-8">
@@ -60,27 +105,27 @@ const StoryManagement = () => {
 
           <div className="flex flex-col gap-2">
             <p className="font-extrabold">Category</p>
-            <Select>
+            <Select onValueChange={setCategoryFilter} value={categoryFilter}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Publish" />
+                <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="light">Publish</SelectItem>
-                <SelectItem value="system">Draft</SelectItem>
+                <SelectItem value="Financial">Financial</SelectItem>
+                <SelectItem value="Technology">Technology</SelectItem>
+                <SelectItem value="Health">Health</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="flex flex-col gap-2">
             <p className="font-extrabold">Status</p>
-            <Select>
+            <Select onValueChange={setStatusFilter} value={statusFilter}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Financial" />
+                <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="light">Financial</SelectItem>
-                <SelectItem value="system">Technology</SelectItem>
-                <SelectItem value="system">Health</SelectItem>
+                <SelectItem value="Publish">Publish</SelectItem>
+                <SelectItem value="Draft">Draft</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -89,6 +134,7 @@ const StoryManagement = () => {
             <Button
               type="reset"
               className="rounded-full bg-white border-[1px] border-gray-300 text-gray-950 p-4"
+              onClick={resetFilter}
             >
               Reset
             </Button>
@@ -99,7 +145,11 @@ const StoryManagement = () => {
               >
                 Cancel
               </Button>
-              <Button type="submit" className="rounded-full bg-orange p-4">
+              <Button
+                type="submit"
+                className="rounded-full bg-orange p-4"
+                onClick={applyFilter}
+              >
                 Filter
               </Button>
             </div>
