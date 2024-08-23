@@ -60,13 +60,13 @@ export const columns: ColumnDef<Story>[] = [
       const handleEdit = (e: React.MouseEvent) => {
         e.stopPropagation();
         router.push(
-          `/story-management/add-stories?action=edit&title=${row.original.title}`
+          `/story-management/add-stories?action=edit&id=${row.original.id}`
         );
       };
 
       const handleDelete = (e: React.MouseEvent) => {
         e.stopPropagation();
-        console.log("Delete action triggered for:", row.original.title);
+        console.log("Delete action triggered for:", row.original.id);
       };
 
       return (

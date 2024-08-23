@@ -28,13 +28,13 @@ export const columns: ColumnDef<Chapter>[] = [
       const handleEdit = (e: React.MouseEvent) => {
         e.stopPropagation();
         router.push(
-          `/story-management/add-stories/add-chapter?action=edit&title=${row.original.id}`
+          `/story-management/add-stories/add-chapter?action=edit&id=${row.original.id}`
         );
       };
 
       const handleDelete = (e: React.MouseEvent) => {
         e.stopPropagation();
-        console.log("Delete action triggered for:", row.original.title);
+        console.log("Delete action triggered for:", row.original.id);
       };
 
       return (

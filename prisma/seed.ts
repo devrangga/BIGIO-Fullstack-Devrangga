@@ -9,6 +9,7 @@ async function main() {
         data: {
           title: `Story Title ${index + 1}`,
           writers: `Writer ${index + 1}`,
+          synopsis: `Synopsis Uhuy Uhuy ${index + 1}`,
           category:
             index % 3 === 0
               ? Category.Financial

@@ -77,12 +77,12 @@ export function DataTable({ columns, data }: DataTableProps) {
               <TableRow
                 onClick={() => {
                   router.push(
-                    `/story-management/add-stories?action=detail&title=${row.original.title}`
+                    `/story-management/add-stories?action=detail&id=${row.original.id}`
                   );
                 }}
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="grid grid-cols-[1fr,3fr,1.25fr,1.25fr,2.5fr,2fr]"
+                className="grid items-center grid-cols-[1fr,3fr,1.25fr,1.25fr,2.5fr,2fr]"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className="hover:cursor-pointer">

@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { story, Story } from "@/app/lib/constant";
+import { Story } from "@/app/lib/constant";
 import { capitalizeFirstLetter } from "@/lib/helpers";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
@@ -23,19 +23,38 @@ const QuillEditor = dynamic(() => import("react-quill"), { ssr: false });
 
 export default function Page() {
   const [data, setData] = useState<Story | null>(null);
+  const [storyId, setStoryId] = useState<string>("");
   const router = useRouter();
   const searchParams = useSearchParams();
   const action: string | null = searchParams.get("action");
 
   useEffect(() => {
-    const res = story.find(
-      (item: Story) => item?.chapter[0]?.title === searchParams.get("title")
-    );
-    setData(res || null);
-  }, [searchParams]);
+    const fetchData = async () => {
+      try {
+        const params = searchParams.get("id");
+        const response = await fetch(`/api/chapter/${params}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "GET",
+        });
+
+        const res = await response.json();
+        setStoryId(res.story.id);
+
+        const chapter = await res.story.chapter.find(
+          (item) => item.id === searchParams.get("id")
+        );
+        setData(chapter);
+        setContent(chapter.content);
+      } catch (error) {
+        console.error("Fetch error:", error);
+      }
+    };
+    fetchData();
+    }, [searchParams]);
 
   const isDetailMode = action === "detail";
-  const isEditMode = action === "edit";
 
   const [content, setContent] = useState<string>("");
   const quillModules = {
@@ -86,7 +105,7 @@ export default function Page() {
             className="text-gray-300 hover:cursor-pointer hover:text-gray-400"
             onClick={() =>
               router.replace(
-                `/story-management/add-stories?action=${action}&title=${data?.title}`
+                `/story-management/add-stories?action=${action}&id=${storyId}`
               )
             }
           >
@@ -107,7 +126,7 @@ export default function Page() {
           <Button
             onClick={() =>
               router.replace(
-                `/story-management/add-stories?action=${action}&title=${data?.title}`
+                `/story-management/add-stories?action=${action}&id=${storyId}`
               )
             }
             className="w-fit flex flex-row gap-4 rounded-full bg-gray-100 text-gray-900 font-bold px-6 hover:bg-gray-300 hover:text-gray-900"

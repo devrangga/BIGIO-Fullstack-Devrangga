@@ -21,10 +21,10 @@ import {
 import React, { useEffect, useState } from "react";
 import Table from "./_components/Table";
 import Link from "next/link";
-import { story as initialStories, Story } from "@/app/lib/constant";
+import { Story } from "@/app/lib/constant";
 
 const StoryManagement = () => {
-  const [data, setData] = useState<Story[] | []>(initialStories);
+  const [data, setData] = useState<Story[] | []>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -33,7 +33,7 @@ const StoryManagement = () => {
     const searchValue = e.target.value.toLowerCase();
     setSearchTerm(searchValue);
 
-    const filteredData = initialStories.filter(
+    const filteredData = data.filter(
       (story) =>
         story.title.toLowerCase().includes(searchValue) ||
         story.writers.toLowerCase().includes(searchValue)
@@ -43,7 +43,7 @@ const StoryManagement = () => {
   };
 
   const applyFilter = () => {
-    const filteredData = initialStories
+    const filteredData = data
       .filter(
         (story) =>
           story.title.toLowerCase().includes(searchTerm) ||
@@ -62,17 +62,18 @@ const StoryManagement = () => {
     setCategoryFilter("");
     setStatusFilter("");
     setSearchTerm("");
-    setData(initialStories);
+    fetchData();
+  };
+
+  const fetchData = async () => {
+    const response = await fetch("/api/story-management");
+    const res = await response.json();
+    setData(res.stories);
+    console.log(res.stories);
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetch("/api/story");
-      const res = await data.json();
-      console.log("ALO", res.stories);
-    };
     fetchData();
-    console.log(initialStories);
   }, []);
 
   return (

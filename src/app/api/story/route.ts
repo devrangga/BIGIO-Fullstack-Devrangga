@@ -1,19 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 
-const prisma = new PrismaClient();
-
-export async function GET(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    const stories = await prisma.story.findMany({
-      include: {
-        chapter: true,
+    const body = await req.json();
+
+    const story = await prisma.story.create({
+      data: {
+        title: body.title,
+        writers: body.writers,
+        synopsis: body.synopsis,
+        category: body.category,
+        status: body.status,
       },
     });
-
-    return NextResponse.json({ stories });
+    return NextResponse.json({ story });
   } catch (error) {
-    NextResponse.json({ error });
+    return NextResponse.json({ error: `errornyeaa ${error}` });
   } finally {
     await prisma.$disconnect();
   }

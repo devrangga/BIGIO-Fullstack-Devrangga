@@ -24,13 +24,15 @@ enum Status {
 }
 
 model Story {
-  id       String    @id @default(uuid())
-  title    String
-  writers  String
-  category Category
-  keyword  String[]
-  status   Status
-  chapter  Chapter[] @relation("StoryChapters")
+  id        String    @id @default(uuid())
+  title     String    @unique
+  writers   String
+  synopsis  String
+  category  Category
+  keyword   String[]
+  status    Status
+  chapter   Chapter[] @relation("StoryChapters")
+  updatedAt DateTime  @updatedAt
 }
 
 model Chapter {
@@ -40,4 +42,5 @@ model Chapter {
   content     String
   lastUpdated DateTime
   story       Story    @relation("StoryChapters", fields: [storyId], references: [id])
+  updatedAt   DateTime @updatedAt
 }

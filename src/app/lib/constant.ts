@@ -23,6 +23,7 @@ export type Story = {
   id: string;
   title: string;
   writers: string;
+  synopsis: string;
   category: "Financial" | "Technology" | "Health";
   keyword: string[];
   status: "Draft" | "Publish";
