@@ -18,13 +18,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "./_components/Table";
 import Link from "next/link";
 import { story as initialStories, Story } from "@/app/lib/constant";
 
 const StoryManagement = () => {
-  const [data, setData] = useState<Story[]>(initialStories);
+  const [data, setData] = useState<Story[] | []>(initialStories);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -64,6 +64,16 @@ const StoryManagement = () => {
     setSearchTerm("");
     setData(initialStories);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetch("/api/story");
+      const res = await data.json();
+      console.log("ALO", res.stories);
+    };
+    fetchData();
+    console.log(initialStories);
+  }, []);
 
   return (
     <section className="flex flex-col gap-4">

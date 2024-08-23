@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export default async function GET(req: NextRequest, res: NextResponse) {
+export async function GET(request: NextRequest) {
   try {
     const stories = await prisma.story.findMany({
       include: {
@@ -13,7 +13,7 @@ export default async function GET(req: NextRequest, res: NextResponse) {
 
     return NextResponse.json({ stories });
   } catch (error) {
-    NextResponse.json({ error }, { status: res.status });
+    NextResponse.json({ error });
   } finally {
     await prisma.$disconnect();
   }
