@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Chapter, story } from "@/app/lib/constant";
 import { useRouter, useSearchParams } from "next/navigation";
+import { formatDate } from "@/lib/helpers";
 
 export const columns: ColumnDef<Chapter>[] = [
   {
@@ -34,13 +35,27 @@ export const columns: ColumnDef<Chapter>[] = [
 
       const handleDelete = (e: React.MouseEvent) => {
         e.stopPropagation();
-        console.log("Delete action triggered for:", row.original.id);
+        const deleteStory = async () => {
+          const del = await fetch(`/api/story/${row.original.id}`, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            method: "DELETE",
+          });
+          const res = await del.json();
+          if (!res.ok) {
+            console.error("Failed to delete story:", res.statusText);
+            return;
+          }
+          router.refresh();
+        };
+        deleteStory();
       };
 
       return (
         <DropdownMenu>
           <div className="flex justify-between items-center">
-            <h1>{row.getValue("lastUpdated")}</h1>
+            <h1>{formatDate(row.getValue("lastUpdated"))}</h1>
             <DropdownMenuTrigger
               disabled={isDetail}
               className="flex flex-row gap-1 "

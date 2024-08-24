@@ -41,6 +41,6 @@ model Chapter {
   title       String
   content     String
   lastUpdated DateTime
-  story       Story    @relation("StoryChapters", fields: [storyId], references: [id])
+  story       Story    @relation("StoryChapters", fields: [storyId], references: [id], onDelete: Cascade)
   updatedAt   DateTime @updatedAt
 }

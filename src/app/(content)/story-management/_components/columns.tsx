@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { Story } from "@/app/lib/constant";
+import { revalidatePath } from "next/cache";
 
 export const columns: ColumnDef<Story>[] = [
   {
@@ -66,7 +67,23 @@ export const columns: ColumnDef<Story>[] = [
 
       const handleDelete = (e: React.MouseEvent) => {
         e.stopPropagation();
-        console.log("Delete action triggered for:", row.original.id);
+        const deleteStory = async () => {
+          const del = await fetch(`/api/story-management/${row.original.id}`, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            method: "DELETE",
+          });
+          const res = await del.json();
+          if (!del.ok) {
+            console.log("INI ID : ", row.original.id);
+            console.error("Failed to delete story:", res.statusText);
+            return;
+          }
+          router.refresh();
+          console.log("HALOOO", res);
+        };
+        deleteStory();
       };
 
       return (

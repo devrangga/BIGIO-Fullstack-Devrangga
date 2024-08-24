@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
         chapter: true,
       },
       orderBy: {
-        id: "desc",
+        updatedAt: "desc",
       },
     });
 

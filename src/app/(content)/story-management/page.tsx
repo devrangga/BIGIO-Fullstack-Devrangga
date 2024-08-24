@@ -25,6 +25,7 @@ import { Story } from "@/app/lib/constant";
 
 const StoryManagement = () => {
   const [data, setData] = useState<Story[] | []>([]);
+  const [filteredData, setFilteredData] = useState<Story[] | []>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -33,17 +34,17 @@ const StoryManagement = () => {
     const searchValue = e.target.value.toLowerCase();
     setSearchTerm(searchValue);
 
-    const filteredData = data.filter(
+    const filtered = data.filter(
       (story) =>
         story.title.toLowerCase().includes(searchValue) ||
         story.writers.toLowerCase().includes(searchValue)
     );
 
-    setData(filteredData);
+    setFilteredData(filtered);
   };
 
   const applyFilter = () => {
-    const filteredData = data
+    const filtered = data
       .filter(
         (story) =>
           story.title.toLowerCase().includes(searchTerm) ||
@@ -55,21 +56,21 @@ const StoryManagement = () => {
           (statusFilter ? story.status === statusFilter : true)
       );
 
-    setData(filteredData);
+    setFilteredData(filtered);
   };
 
   const resetFilter = () => {
     setCategoryFilter("");
     setStatusFilter("");
     setSearchTerm("");
-    fetchData();
+    setFilteredData(data);
   };
 
   const fetchData = async () => {
     const response = await fetch("/api/story-management");
     const res = await response.json();
     setData(res.stories);
-    console.log(res.stories);
+    setFilteredData(res.stories);
   };
 
   useEffect(() => {
@@ -106,7 +107,7 @@ const StoryManagement = () => {
             </div>
           </div>
 
-          <Table story={data} />
+          <Table story={filteredData} />
         </div>
 
         <DialogContent className="w-[425px] gap-8">

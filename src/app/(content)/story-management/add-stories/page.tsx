@@ -89,6 +89,7 @@ export default function Page() {
   }, [searchParams]);
 
   const isDetailMode = action === "detail";
+  const isAddMode = action === "add";
 
   const onSubmit = async (data: FormValues) => {
     try {
@@ -101,6 +102,7 @@ export default function Page() {
       });
       if (response.ok) {
         console.log("Form submitted successfully:", data);
+        router.back();
         router.refresh();
       } else {
         console.error("Form submission failed");
@@ -182,7 +184,7 @@ export default function Page() {
                 <h1 className="font-bold text-gray-900">Category</h1>
                 <Select
                   {...register("category")}
-                  defaultValue={data?.category || "Financial"}
+                  defaultValue={data?.category || undefined}
                   onValueChange={(value) => setValue("category", value)}
                   disabled={isDetailMode}
                 >
@@ -231,7 +233,7 @@ export default function Page() {
                 <h1 className="font-bold text-gray-900">Status</h1>
                 <Select
                   {...register("status")}
-                  defaultValue={data?.status || "Draft"}
+                  defaultValue={data?.status || undefined}
                   onValueChange={(value) => setValue("status", value)}
                   disabled={isDetailMode}
                 >
@@ -248,7 +250,7 @@ export default function Page() {
               </div>
             </div>
 
-            {!isDetailMode && (
+            {!isDetailMode && !isAddMode && (
               <div className="flex justify-end w-full">
                 <Button
                   onClick={() =>
